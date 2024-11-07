@@ -2,10 +2,12 @@ import React from "react";
 import Die from "./components/Die";
 import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
+import HeadInfo from "./components/HeadInfo";
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
+  const [points, setPoints] = React.useState(0);
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
@@ -44,11 +46,22 @@ export default function App() {
       setDice(allNewDice());
     }
   }
+  function handleClick(id) {
+    addPoints(id);
+    holdDice(id);
+  }
+  function addPoints() {
+    setPoints((prevValue) => prevValue + 1);
+  }
 
   function holdDice(id) {
     setDice((oldDice) =>
       oldDice.map((die) => {
-        return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+        if (die.id === id) {
+          return { ...die, isHeld: !die.isHeld };
+        } else {
+          return die;
+        }
       })
     );
   }
@@ -58,22 +71,26 @@ export default function App() {
       key={die.id}
       value={die.value}
       isHeld={die.isHeld}
-      holdDice={() => holdDice(die.id)}
+      holdDice={() => handleClick(die.id)}
+      props={addPoints}
     />
   ));
 
   return (
-    <main>
-      {tenzies && <Confetti />}
-      <h1 className="title">Tenzies</h1>
-      <p className="instructions">
-        Roll until all dice are the same. Click each die to freeze it at its
-        current value between rolls.
-      </p>
-      <div className="dice-container">{diceElements}</div>
-      <button className="roll-dice" onClick={rollDice}>
-        {tenzies ? "New Game" : "Roll"}
-      </button>
-    </main>
+    <>
+      <HeadInfo points={points} rolls={10} time={10} bestTime={10} />
+      <main>
+        {tenzies && <Confetti />}
+        <h1 className="title">Tenzies</h1>
+        <p className="instructions">
+          Roll until all dice are the same. Click each die to freeze it at its
+          current value between rolls.
+        </p>
+        <div className="dice-container">{diceElements}</div>
+        <button className="roll-dice" onClick={rollDice}>
+          {tenzies ? "New Game" : "Roll"}
+        </button>
+      </main>
+    </>
   );
 }

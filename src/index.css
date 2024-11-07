@@ -7,6 +7,10 @@ body {
   background-color: #0b2434;
   padding: 20px;
   font-family: "Karla", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 main {
@@ -73,4 +77,12 @@ main {
 
 .roll-dice:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+.scores {
+  color: aliceblue;
+  display: flex;
+  gap: 10px;
+}
+.myPoints {
+  color: #59e391;
 }

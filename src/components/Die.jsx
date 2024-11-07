@@ -1,4 +1,5 @@
 export default function Die(props) {
+  console.log(props.holdDice);
   const styles = {
     backgroundColor: props.isHeld ? "#59E391" : "white",
   };
