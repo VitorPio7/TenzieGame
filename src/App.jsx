@@ -8,6 +8,7 @@ export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [points, setPoints] = React.useState(0);
+  const [clickRoll, setClicksRoll] = React.useState(0);
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
@@ -17,7 +18,6 @@ export default function App() {
       setTenzies(true);
     }
   }, [dice]);
-
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -41,9 +41,12 @@ export default function App() {
           return die.isHeld ? die : generateNewDie();
         })
       );
+      setClicksRoll((prevValue) => prevValue + 1);
     } else {
       setTenzies(false);
       setDice(allNewDice());
+      setPoints(0);
+      setClicksRoll(0);
     }
   }
   function handleClick(id) {
@@ -78,7 +81,7 @@ export default function App() {
 
   return (
     <>
-      <HeadInfo points={points} rolls={10} time={10} bestTime={10} />
+      <HeadInfo points={points} rolls={clickRoll} />
       <main>
         {tenzies && <Confetti />}
         <h1 className="title">Tenzies</h1>
